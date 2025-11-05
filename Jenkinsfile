@@ -36,7 +36,19 @@ pipeline {
     }
 
     post {
-        success { echo "CI Pipeline Completed Successfully!" }
-        failure { echo "CI Pipeline Failed!" }
+    success {
+        emailext(
+            subject: "SUCCESS: Build #${env.BUILD_NUMBER}",
+            body: "The build was successful!",
+            to: "cibi.mit@gmail.com"
+        )
     }
+    failure {
+        emailext(
+            subject: "FAILED: Build #${env.BUILD_NUMBER}",
+            body: "The build has failed. Please check Jenkins.",
+            to: "cibi.mit@gmail.com"
+        )
+    }
+}
 }
